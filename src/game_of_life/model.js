@@ -1,10 +1,10 @@
 /* Customize exception
  * See https://medium.com/@xjamundx/custom-javascript-errors-in-es6-aa891b173f87
  */
-class ValueError extends Error {}
-class OutOfBoundError extends Error {}
+export class ValueError extends Error {}
+export class OutOfBoundError extends Error {}
 
-class World {
+export class World {
   constructor (width, height) {
     if (width <= 0 || height <= 0) {
       throw new ValueError('width and height must all larger than 0')
@@ -112,4 +112,51 @@ class World {
   }
 }
 
-export { World, ValueError, OutOfBoundError }
+export class Pattern {
+  constructor (name, alives) {
+    this.name = name
+    this.alives = alives
+  }
+
+  getAlives () {
+    // Return a new array of alive cells
+    return this.alives.slice()
+  }
+
+  calcRequiredMinSize () {
+    let absXs = this.alives.map((value) => Math.abs(value[0]))
+    let absYs = this.alives.map((value) => Math.abs(value[1]))
+
+    let maxX = Math.max(...absXs)
+    let maxY = Math.max(...absYs)
+
+    return [1 + 2 * maxX, 1 + 2 * maxY]
+  }
+
+  asScreenCoordinate (width, height) {
+    if (this.alives.length === 0) {
+      return []
+    }
+
+    let minSize = this.calcRequiredMinSize()
+    if (width < minSize[0] || height < minSize[1]) {
+      throw new ValueError('Size must be larger than width: ' +
+                           minSize[0] + ', height: ' + minSize[1])
+    }
+
+    let result = []
+    for (let [x, y] of this.alives) {
+      result.push([x + Math.floor(width / 2), -y + Math.floor(height / 2)])
+    }
+
+    return result
+  }
+}
+
+export let Patterns = [
+  new Pattern('Clear', []),
+  new Pattern('Glider', [[1, 0], [0, 1], [-1, -1], [0, -1], [1, -1]]),
+  new Pattern('Small Exploder', [[0, 0], [1, 0], [-1, 0], [0, 1], [-1, -1], [1, -1], [0, -2]]),
+  new Pattern('Exploder', [[0, 2], [0, -2], [-2, 2], [-2, 1], [-2, 0], [-2, -1], [-2, -2],
+                           [2, 2], [2, 1], [2, 0], [2, -1], [2, -2]])
+]

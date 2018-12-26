@@ -1,0 +1,25 @@
+.cell {
+    width: 15px;
+    height: 15px;
+    border: 1px solid;
+    display: inline-block;
+}
+
+.cell.alive {
+    background: yellow;
+}
+
+.cell.dead {
+    background: grey;
+}
+
+.grid-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.grid {
+    display: flex;
+    background: yellow;
+    flex-direction: column;
+}
