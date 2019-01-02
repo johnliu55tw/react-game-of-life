@@ -13,9 +13,42 @@ export class GamePresenter extends Component {
       patternIndex: 0
     }
 
-    this.intervalTimerID = null
+    this.isRunning = false
+    this.intervalTimer = null
+    this.minDelay = this.props.minDelay
+    this.currDelay = this.minDelay
     this.world = new World(props.width, props.height)
     this.patterns = Patterns
+  }
+
+  isRunning () {
+    return this.isRunning
+  }
+
+  start () {
+    if (!this.isRunning) {
+      this.isRunning = true
+      this.intervalTimer = setInterval(this.onTimer.bind(this), this.currDelay)
+    }
+  }
+
+  stop () {
+    if (this.isRunning) {
+      this.isRunning = false
+      clearInterval(this.intervalTimer)
+      this.intervalTimer = null
+    }
+  }
+
+  advance () {
+    this.world.advance()
+    this.setState((prevState, props) => {
+      return {alives: this.world.getAlives()}
+    })
+  }
+
+  onTimer () {
+    this.advance()
   }
 
   onCellClick (coor) {
@@ -28,14 +61,22 @@ export class GamePresenter extends Component {
 
   onStartClick () {
     console.log('Start btn clicked.')
+    if (this.isRunning) {
+      this.stop()
+      this.setState((prevState, props) => {
+        return {btnStartText: 'Start'}
+      })
+    } else {
+      this.start()
+      this.setState((prevState, props) => {
+        return {btnStartText: 'Stop'}
+      })
+    }
   }
 
   onNextClick () {
     console.log('Next btn clicked')
-    this.world.advance()
-    this.setState((prevState, props) => {
-      return {alives: this.world.getAlives()}
-    })
+    this.advance()
   }
 
   onSliderChange (value) {

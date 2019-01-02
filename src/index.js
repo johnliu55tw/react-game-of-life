@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import './index.css'
 import { GamePresenter } from './game_of_life/presenter.js'
 import * as serviceWorker from './serviceWorker'
 
@@ -8,6 +7,7 @@ ReactDOM.render(
   <GamePresenter
     width={20}
     height={20}
+    minDelay={200}
   />,
   document.getElementById('root')
 )
