@@ -1,5 +1,6 @@
 /* eslint-env jest */
-import { World, Pattern, ValueError, OutOfBoundError } from './model'
+import { ValueError } from './exceptions'
+import { World, Pattern, OutOfBoundError } from './model'
 
 describe('World model test cases', () => {
   test('Constructor', () => {

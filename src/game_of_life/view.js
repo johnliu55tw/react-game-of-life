@@ -74,6 +74,7 @@ export function Game (props) {
         <Slider
           min={props.sliderProps.min}
           max={props.sliderProps.max}
+          step={props.sliderProps.step}
           initialValue={props.sliderProps.initialValue}
           onChange={props.sliderProps.onChange}
         />
@@ -117,6 +118,7 @@ export class Slider extends Component {
         type='range'
         min={this.props.min}
         max={this.props.max}
+        step={this.props.step}
         value={this.state.value} // This is required for the element to work
         onChange={this.handleChange.bind(this)}
       />)

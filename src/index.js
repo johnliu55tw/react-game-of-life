@@ -5,9 +5,9 @@ import * as serviceWorker from './serviceWorker'
 
 ReactDOM.render(
   <GamePresenter
-    width={20}
-    height={20}
-    minDelay={200}
+    width={21}
+    height={21}
+    maxSpeed={20}
   />,
   document.getElementById('root')
 )

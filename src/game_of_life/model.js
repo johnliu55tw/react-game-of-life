@@ -1,7 +1,8 @@
 /* Customize exception
  * See https://medium.com/@xjamundx/custom-javascript-errors-in-es6-aa891b173f87
  */
-export class ValueError extends Error {}
+import { ValueError } from './exceptions'
+
 export class OutOfBoundError extends Error {}
 
 export class World {

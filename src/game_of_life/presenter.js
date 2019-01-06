@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Game } from './view'
 import { World, Patterns } from './model'
+import { ValueError } from './exceptions'
 
 export class GamePresenter extends Component {
   constructor (props) {
@@ -15,20 +16,16 @@ export class GamePresenter extends Component {
 
     this.isRunning = false
     this.intervalTimer = null
-    this.minDelay = this.props.minDelay
-    this.currDelay = this.minDelay
+    this.speed = 1
     this.world = new World(props.width, props.height)
     this.patterns = Patterns
-  }
-
-  isRunning () {
-    return this.isRunning
   }
 
   start () {
     if (!this.isRunning) {
       this.isRunning = true
-      this.intervalTimer = setInterval(this.onTimer.bind(this), this.currDelay)
+      this.intervalTimer = setInterval(this.advance.bind(this),
+                                       (1 / this.speed) * 1000)
     }
   }
 
@@ -47,8 +44,18 @@ export class GamePresenter extends Component {
     })
   }
 
-  onTimer () {
-    this.advance()
+  setSpeed (speed) {
+    console.log('setSpeed to ' + speed)
+    if (speed < 1 || speed > this.props.maxSpeed) {
+      throw new ValueError('speed must be >= 1 and <= ' + this.props.maxSpeed)
+    }
+
+    this.speed = speed
+
+    if (this.isRunning) {
+      this.stop()
+      this.start()
+    }
   }
 
   onCellClick (coor) {
@@ -74,17 +81,16 @@ export class GamePresenter extends Component {
     }
   }
 
-  onNextClick () {
-    console.log('Next btn clicked')
-    this.advance()
-  }
-
-  onSliderChange (value) {
-    console.log('Slider changed to ' + value)
-  }
-
   onPatternOptionsChange (text, index) {
     console.log('Options changed to [' + index + '] ' + text)
+    const p = this.patterns[index]
+    this.world = new World(this.props.width, this.props.height)
+    for (let [x, y] of p.asScreenCoordinate(this.props.width, this.props.height)) {
+      this.world.setAlive(x, y)
+    }
+    this.setState((prevState, props) => {
+      return {alives: this.world.getAlives()}
+    })
   }
 
   render () {
@@ -101,14 +107,15 @@ export class GamePresenter extends Component {
     }
 
     let btnNextProps = {
-      onClick: this.onNextClick.bind(this)
+      onClick: this.advance.bind(this)
     }
 
     let sliderProps = {
       min: 1,
-      max: 10,
-      initialValue: this.state.sliderValue,
-      onChange: this.onSliderChange.bind(this)
+      max: this.props.maxSpeed,
+      step: 1,
+      initialValue: 1,
+      onChange: this.setSpeed.bind(this)
     }
 
     let patternOptionsProps = {
