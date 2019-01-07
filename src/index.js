@@ -4,11 +4,13 @@ import { GamePresenter } from './game_of_life/presenter.js'
 import * as serviceWorker from './serviceWorker'
 
 ReactDOM.render(
-  <GamePresenter
-    width={21}
-    height={21}
-    maxSpeed={20}
-  />,
+  <div className='body'>
+    <GamePresenter
+      width={81}
+      height={61}
+      maxSpeed={20}
+    />
+  </div>,
   document.getElementById('root')
 )
 // If you want your app to work offline and load faster, you can change
