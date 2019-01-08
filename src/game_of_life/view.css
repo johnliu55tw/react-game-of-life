@@ -1,34 +1,30 @@
-.body {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-}
-
 .game {
     margin: 5px;
     padding: 5px;
+    background: #dcd0c0;
 }
 
 .control-bar {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    margin-top: 5px;
+    padding: 5px;
+    background: #c0b283;
 }
 
 .cell {
-    width: 6px;
-    height: 6px;
-    border: 1px solid;
+    width: 10px;
+    height: 10px;
+    border: solid 0.5px #585858;
     display: inline-block;
 }
 
 .cell.alive {
-    background: yellow;
+    background: #dcd0c0;
 }
 
 .cell.dead {
-    background: grey;
+    background: #373737;
 }
 
 .grid-row {
@@ -37,8 +33,7 @@
 }
 
 .grid {
-    border: 1px solid;
+    border: 1px #585858;
     display: flex;
-    background: yellow;
     flex-direction: column;
 }
